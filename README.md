@@ -1,20 +1,20 @@
 React App
 
 -List of users
-    ID
-    Name
-    Position
-    Birthdate
-    Description
-    Works remotely
+    ID,
+    Name,
+    Position,
+    Birthdate,
+    Description,
+    Works remotely,
     Delete button
     
 -Add user form
-    ame
-    Position (Manager, Developer, QA)
-    Birthdate
-    Description
-    Works remotely (checkbox)
+    >Name<
+    >Position (Manager, Developer, QA)<
+    >Birthdate<
+    >Description<
+    >Works remotely (checkbox)<
     
 (actions) => 
     Get Users, 
