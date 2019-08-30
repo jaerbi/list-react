@@ -1,9 +1,9 @@
 import React from 'react';
 import Container from '@material-ui/core/Container';
 
-import AppHeader from '../app-header'
-import AddUser from "../add-user";
-import ListUsers from "../list-users";
+import AppHeader from '../components/app-header'
+import AddUser from "../components/add-user";
+import ListUsers from "../components/list-users";
 
 import './app.css';
 

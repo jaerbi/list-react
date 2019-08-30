@@ -62,7 +62,7 @@ const ListUsers = () => {
 				variant="contained"
 				color="secondary"
 				className={ classes.button }
-				onClick={ () => usersService.deleteAllUsers() }
+				onClick={ usersService.deleteAllUsers }
 			>
 				Delete All Users
 				<DeleteIcon className={ classes.rightIcon }/>
