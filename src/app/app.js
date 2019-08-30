@@ -7,7 +7,7 @@ import ListUsers from "../components/list-users";
 
 import './app.css';
 
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { HashRouter as Router, Route } from 'react-router-dom';
 
 
 export default function App() {
