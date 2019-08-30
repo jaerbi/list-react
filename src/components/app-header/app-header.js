@@ -1,38 +1,49 @@
 import React, { useState } from 'react';
-import Button from '@material-ui/core/Button';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
+import { BottomNavigation, BottomNavigationAction } from '@material-ui/core';
+import { MdFilterList, MdPlaylistAdd } from "react-icons/md";
+import { makeStyles } from '@material-ui/core/styles';
+import { Link, withRouter } from 'react-router-dom';
 
-export default function AppHeader() {
-	const [anchorEl, setAnchorEl] = useState(null);
+import './app-header.css';
+
+const useStyles = makeStyles({
+	root: {
+		width: 500
+	},
+});
+
+function AppHeader({ history }) {
 	
-	function handleClick(event) {
-		setAnchorEl(event.currentTarget);
-	}
-	
-	function handleClose() {
-		setAnchorEl(null);
-	}
+	const classes = useStyles();
+	const [value, setValue] = useState(0);
 	
 	return (
-		<div>
-			<Button
-				aria-controls="simple-menu"
-				aria-haspopup="true"
-				onClick={ handleClick }
+		<div className="app-header">
+			<Link to="/">React APP</Link>
+			<BottomNavigation
+				value={ value }
+				onChange={ (event, newValue) => {
+					setValue(newValue);
+				} }
+				showLabels
+				className={ classes.root }
 			>
-				Open Menu
-			</Button>
-			<Menu
-				id="simple-menu"
-				anchorEl={ anchorEl }
-				keepMounted
-				open={ Boolean(anchorEl) }
-				onClose={ handleClose }
-			>
-				<MenuItem onClick={ handleClose }>Users List</MenuItem>
-				<MenuItem onClick={ handleClose }>Add User</MenuItem>
-			</Menu>
+				<BottomNavigationAction
+					label="Users List" icon={ <MdFilterList/> }
+					onClick={ () => {
+						history.push('/list-users')
+					} }
+				/>
+				<BottomNavigationAction
+					label="Add User"
+					icon={ <MdPlaylistAdd/> }
+					onClick={ () => {
+						history.push('/add-user')
+					} }
+				/>
+			</BottomNavigation>
 		</div>
 	);
 }
+
+export default withRouter(AppHeader);

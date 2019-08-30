@@ -10,10 +10,12 @@ import {
 	Checkbox,
 	Icon
 } from '@material-ui/core';
-import { ValidatorComponent } from 'react-form-validator-core';
+import Button from "@material-ui/core/Button/Button";
 
 import './add-user.css';
-import Button from "@material-ui/core/Button/Button";
+
+import UserService from '../../services/users-service';
+
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -45,6 +47,7 @@ const useStyles = makeStyles(theme => ({
 
 const AddUser = () => {
 	const classes = useStyles();
+	const usersService = new UserService();
 	
 	const [open, setOpen] = useState(false);
 	const defaultValue = {
@@ -58,83 +61,91 @@ const AddUser = () => {
 	
 	const handleInputChange = name => event => {
 		const value = name === 'remote' ? event.target.checked : event.target.value;
-		
 		getFormValue({ ...formData, [name]: value });
 	};
 	
+	const { remote, position, name, description, date } = formData;
 	const handleClose = () => setOpen(false);
 	const handleOpen = () => setOpen(true);
 	
 	const handleSubmit = (event) => {
 		event.preventDefault();
-		console.log(event);
-		console.log(formData);
 		
+		usersService.addUser({
+			"name": name,
+			"position": position,
+			"birthdate": date,
+			"description": description,
+			"worksRemotely": remote
+		});
+		
+		// clear
 		getFormValue(defaultValue)
 	};
 	
-	const { remote, position, name, description, date } = formData;
-	
 	return (
 		<form className="add-user" onSubmit={ handleSubmit }>
-			<FormControl className={ classes.formControl }>
-				<TextField
-					type="text"
-					required
-					value={ name }
-					label="Name"
-					placeholder="Type your Name"
-					onChange={ handleInputChange('name') }
-					margin="normal"
-					variant="outlined"
-				/>
-			</FormControl>
-			
-			<FormControl className={ classes.formControl }>
-				<TextField
-					multiline
-					rowsMax="4"
-					required
-					value={ description }
-					label="Description"
-					placeholder="Type some description ..."
-					onChange={ handleInputChange('description') }
-					margin="normal"
-					variant="outlined"
-				/>
-			</FormControl>
-			
-			<FormControl className={ classes.formControl }>
-				<InputLabel>Position</InputLabel>
-				<Select
-					open={ open }
-					onClose={ handleClose }
-					onOpen={ handleOpen }
-					value={ position }
-					onChange={ handleInputChange('position') }
-				
-				>
-					<MenuItem value="0">
-						<em>None</em>
-					</MenuItem>
-					<MenuItem value="Manager">Manager</MenuItem>
-					<MenuItem value="Developer">Developer</MenuItem>
-					<MenuItem value="QA">QA</MenuItem>
-				</Select>
-			</FormControl>
-			
-			<FormControlLabel
-				control={
-					<Checkbox
-						color="primary"
-						value="remote"
-						checked={ remote }
-						onChange={ handleInputChange('remote') }
+			<h2>Create User</h2>
+			<div className="form-section">
+				<FormControl className={ classes.formControl }>
+					<TextField
+						type="text"
+						required
+						value={ name }
+						label="Name"
+						placeholder="Type your Name"
+						onChange={ handleInputChange('name') }
+						margin="normal"
+						variant="outlined"
 					/>
-				}
-				label="Remote"
-			/>
-			
+				</FormControl>
+				
+				<FormControl className={ classes.formControl }>
+					<TextField
+						multiline
+						rowsMax="4"
+						required
+						value={ description }
+						label="Description"
+						placeholder="Type some description ..."
+						onChange={ handleInputChange('description') }
+						margin="normal"
+						variant="outlined"
+					/>
+				</FormControl>
+			</div>
+			<div className="form-section">
+				<FormControl className={ classes.formControl }>
+					<InputLabel>Position</InputLabel>
+					<Select
+						open={ open }
+						onClose={ handleClose }
+						onOpen={ handleOpen }
+						value={ position }
+						onChange={ handleInputChange('position') }
+					
+					>
+						<MenuItem value="0">
+							<em>None</em>
+						</MenuItem>
+						<MenuItem value="Manager">Manager</MenuItem>
+						<MenuItem value="Developer">Developer</MenuItem>
+						<MenuItem value="QA">QA</MenuItem>
+					</Select>
+				</FormControl>
+				
+				<FormControlLabel
+					control={
+						<Checkbox
+							color="primary"
+							value="remote"
+							checked={ remote }
+							onChange={ handleInputChange('remote') }
+						/>
+					}
+					label="Remote"
+				/>
+			</div>
 			<TextField
 				id="date"
 				label="Birthday"
@@ -144,17 +155,27 @@ const AddUser = () => {
 				onChange={ handleInputChange('date') }
 			/>
 			
-			<Button
-				variant="contained"
-				color="primary"
-				className={ classes.button }
-				type="submit"
-				required
-			>
-				Send
-				<Icon className={ classes.rightIcon }>send</Icon>
-			</Button>
-		
+			<div className="actions">
+				<Button
+					variant="contained"
+					color="primary"
+					className={ classes.button }
+					type="submit"
+				>
+					Send
+					<Icon className={ classes.rightIcon }>send</Icon>
+				</Button>
+				<Button
+					variant="outlined"
+					color="secondary"
+					className={ classes.button }
+					type="button"
+					onClick={() => getFormValue(defaultValue)}
+				>
+					Clear
+					<Icon className={ classes.rightIcon }>clear</Icon>
+				</Button>
+			</div>
 		</form>
 	);
 };

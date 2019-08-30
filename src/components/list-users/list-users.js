@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
-
-import UserService from '../../services/users-service';
-
-import User from '../user';
-
-import './list-users.css';
 import Button from "@material-ui/core/Button/Button";
 import DeleteIcon from '@material-ui/icons/Delete';
 import { makeStyles } from '@material-ui/core/styles';
+
+import UserService from '../../services/users-service';
+import User from '../user';
+
+import './list-users.css';
 
 const useStyles = makeStyles(theme => ({
 	button: {
@@ -23,16 +22,17 @@ const ListUsers = () => {
 	const [usersRespond, setUsers] = useState([]);
 	
 	useEffect(() => {
+		let isSubscribed = true;
+		
 		usersService.getAllUsers().then(usersRespond => {
-			setUsers(usersRespond);
+			if (isSubscribed) {
+				setUsers(usersRespond);
+			}
 		});
-		// usersService.addUser({
-		// "name": " 'Andriy'",
-		// "position": " 'Junior'",
-		// "birthdate": " '13.12.1992'",
-		// "description": " 'Test description'",
-		// "worksRemotely": true
-		// })
+		
+		return () => {
+			isSubscribed = false
+		}
 	}, [usersRespond]);
 	
 	const onDeleted = (id) => {
@@ -61,11 +61,11 @@ const ListUsers = () => {
 			<Button
 				variant="contained"
 				color="secondary"
-				className={classes.button}
+				className={ classes.button }
 				onClick={ () => usersService.deleteAllUsers() }
 			>
 				Delete All Users
-				<DeleteIcon className={classes.rightIcon} />
+				<DeleteIcon className={ classes.rightIcon }/>
 			</Button>
 		</div>
 	
